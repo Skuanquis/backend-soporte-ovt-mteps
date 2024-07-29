@@ -29,5 +29,6 @@ router.put('/preguntas/:id', authenticateToken, userController.updatePregunta);
 router.get('/operadores', authenticateToken, userController.getOperadores);
 router.put('/update-operadores/:id', authenticateToken, userController.updateRolSupervisor);
 router.put('/update-roles/:idSupervisor/:idUser',authenticateToken, userController.updateRolesSupervisor);
+router.get('/operadores-supervisores', authenticateToken, userController.getOperadoresSupervisores)
 
 module.exports = router;

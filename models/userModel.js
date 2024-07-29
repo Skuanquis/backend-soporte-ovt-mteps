@@ -71,7 +71,7 @@ const getAtencionesUsuario = (id, callback) => {
 };
 
 const getTodasAtenciones = (callback) => {
-    const query = 'SELECT tipo_atencion, COUNT(*) AS total FROM atencion GROUP BY tipo_atencion'
+    const query = 'SELECT tipo_atencion, COUNT(*) AS total FROM atencion WHERE YEAR(fecha) = YEAR(CURRENT_DATE()) GROUP BY tipo_atencion;'
     db.query(query, callback);
 }
 
@@ -81,7 +81,7 @@ const getPendientesUsuario = (id, callback) => {
 }
 
 const getTotalPendientes = (callback) => {
-    const query = `SELECT tipo_atencion, COUNT(*) AS cantidad FROM atencion WHERE estado = 'Pendiente' GROUP BY tipo_atencion;`
+    const query = `SELECT tipo_atencion, COUNT(*) AS cantidad FROM atencion WHERE estado = 'Pendiente' AND YEAR(fecha) = YEAR(CURRENT_DATE()) GROUP BY tipo_atencion;`
     db.query(query, callback);
 }
 
@@ -196,7 +196,7 @@ const updatePregunta = (id, preguntaData, callback) => {
 };
 
 const getOperadores = (callback) => {
-    const sql = `SELECT id_usuario, nombre FROM usuarios WHERE rol IN ('operador', 'supervisor') AND estado = 'activo'`;
+    const sql = `SELECT id_usuario, nombre FROM usuarios WHERE rol = 'operador' AND estado = 'activo'`;
     db.query(sql, callback);
 };
 
@@ -210,9 +210,10 @@ const updateRolOperador = (id, callback) => {
     db.query(sql, [id], callback);
 };
 
-
-
-
+const getOperadoresSupervisores = (callback) => {
+    const sql = `SELECT id_usuario, nombre FROM usuarios WHERE rol IN ('operador', 'supervisor') AND estado = 'activo'`;
+    db.query(sql, callback);
+};
 
 const getReport = (filters, callback) => {
     const { tipoAtencion, pasante, estado, problema, subproblema, fechaInicio, fechaFin } = filters;
@@ -262,6 +263,7 @@ const getReport = (filters, callback) => {
         callback(null, rows);
     });
 };
+
 module.exports = {
     getUserByUsername,
     getUserById,
@@ -297,5 +299,6 @@ module.exports = {
     updatePregunta,
     getOperadores,
     updateRolSupervisor,
-    updateRolOperador
+    updateRolOperador,
+    getOperadoresSupervisores
 };

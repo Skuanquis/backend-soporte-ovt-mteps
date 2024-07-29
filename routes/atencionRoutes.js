@@ -6,5 +6,9 @@ const authenticateToken = require('../middlewares/authMiddlewares');
 router.post('/atenciones', authenticateToken, atencionController.createAtencion);
 router.get('/atenciones', authenticateToken, atencionController.getAtencionesByUser); 
 router.put('/atenciones/:id', authenticateToken, atencionController.updateAtencion);
+router.get('/atenciones-anual', authenticateToken, atencionController.getReporteAnual);
+router.get('/atenciones-anual-mensual', authenticateToken, atencionController.getReporteAnualMensual);
+router.get('/atenciones-anual-mes/:anio/:mes', authenticateToken, atencionController.getReporteAnioMes);
+router.get('/atenciones/intervalo', authenticateToken, atencionController.getAtencionesByDate);
 
 module.exports = router;

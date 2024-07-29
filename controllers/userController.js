@@ -389,6 +389,16 @@ const getOperadores = (req, res) => {
     });
 };
 
+const getOperadoresSupervisores = (req, res) => {
+    userModel.getOperadoresSupervisores((err, results) => {
+        if (err) {
+            return res.status(500).send({ error: 'Error fetching operadores' });
+        }
+        res.status(200).send(results);
+    });
+};
+
+
 const updateRolSupervisor = (req, res) => {
     const id = req.params.id;
     userModel.updateRolSupervisor(id, (err, results) => {
@@ -460,5 +470,6 @@ module.exports = {
     updatePregunta,
     getOperadores,
     updateRolSupervisor,
-    updateRolesSupervisor
+    updateRolesSupervisor,
+    getOperadoresSupervisores
 };

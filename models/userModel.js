@@ -29,7 +29,7 @@ const createUser =(userData, callback) =>{
 
 const getPasantes = (callback) => {
     const sql = `
-        SELECT u.id_usuario, u.nombre, u.ci, u.numero AS celular, COUNT(a.id_atencion) AS casos, u.estado
+        SELECT u.id_usuario, u.nombre, u.ci, u.numero AS celular, COUNT(a.id_atencion) AS casos, u.estado, u.rol
         FROM usuarios u
         LEFT JOIN atencion a ON u.id_usuario = a.id_usuario
         WHERE u.rol IN ('operador', 'supervisor')
@@ -45,13 +45,14 @@ const getPasanteById = (id, callback) => {
 };
 
 const updatePasante = (id, pasanteData, callback) => {
-    const { nombre, direccion, ci, numero, estado, password } = pasanteData;
+    const { nombre, direccion, ci, numero, estado, password, rol } = pasanteData;  // Incluir 'rol' en la desestructuración
     const sql = password 
-        ? `UPDATE usuarios SET nombre = ?, direccion = ?, ci = ?, numero = ?, password = ?, estado = ? WHERE id_usuario = ? AND rol IN ('operador', 'supervisor')`
-        : `UPDATE usuarios SET nombre = ?, direccion = ?, ci = ?, numero = ?, estado = ? WHERE id_usuario = ? AND rol IN ('operador', 'supervisor')`;
-    const params = password ? [nombre, direccion, ci, numero, password, estado, id] : [nombre, direccion, ci, numero, estado, id];
+        ? `UPDATE usuarios SET nombre = ?, direccion = ?, ci = ?, numero = ?, password = ?, estado = ?, rol = ? WHERE id_usuario = ?`
+        : `UPDATE usuarios SET nombre = ?, direccion = ?, ci = ?, numero = ?, estado = ?, rol = ? WHERE id_usuario = ?`;
+    const params = password ? [nombre, direccion, ci, numero, password, estado, rol, id] : [nombre, direccion, ci, numero, estado, rol, id];
     db.query(sql, params, callback);
 };
+
 
 
 const updateUserProfile = (id, userData, callback) => {
@@ -167,7 +168,7 @@ const addPregunta = (nuevaPregunta, callback) => {
 };
 
 const getListaPasantes = (callback) => {
-    const query = `SELECT id_usuario, nombre FROM usuarios WHERE rol IN ('operador', 'supervisor')`;
+    const query = `SELECT id_usuario, nombre FROM usuarios WHERE rol IN ('operador', 'supervisor') AND estado = 'activo'`;
     db.query(query, callback);
 }
 
@@ -220,14 +221,14 @@ const getReport = (filters, callback) => {
     
     const formattedFechaInicio = new Date(fechaInicio).toISOString().split('T')[0];
     const formattedFechaFin = new Date(fechaFin).toISOString().split('T')[0];
-    
+    console.log("fecha ini: ",formattedFechaInicio, "fecha fin: ",formattedFechaFin);
     let query = `
         SELECT
             a.tipo_atencion, u.nombre AS nombre_pasante, a.problema, a.subproblema, a.estado,
             a.fecha, a.nit, a.nombre_empresa
         FROM atencion a
         JOIN usuarios u ON a.id_usuario = u.id_usuario
-        WHERE a.fecha >= ? AND a.fecha <= ?
+        WHERE a.fecha >= ? AND a.fecha <= ? ORDER BY fecha DESC
     `;
     const params = [formattedFechaInicio, formattedFechaFin];
     

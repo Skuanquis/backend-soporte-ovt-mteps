@@ -10,5 +10,6 @@ router.get('/atenciones-anual', authenticateToken, atencionController.getReporte
 router.get('/atenciones-anual-mensual', authenticateToken, atencionController.getReporteAnualMensual);
 router.get('/atenciones-anual-mes/:anio/:mes', authenticateToken, atencionController.getReporteAnioMes);
 router.get('/atenciones/intervalo', authenticateToken, atencionController.getAtencionesByDate);
+router.get('/reporte-atenciones-usuario/:id', authenticateToken, atencionController.getReporteAnioMesUserId);
 
 module.exports = router;

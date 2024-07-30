@@ -81,6 +81,18 @@ const getReporteAnioMes = (req, res) => {
         res.status(200).send(report);
     });
 };
+
+const getReporteAnioMesUserId = (req, res) =>{
+    const id_usuario = req.params.id
+    console.log(req)
+    atencionModel.getReporteAnioMesUserId(id_usuario, (err, report) => {
+        if (err) {
+            console.error('Error generating report:', err);
+            return res.status(500).send({ error: 'Error generating report' });
+        }
+        res.status(200).send(report);
+    });
+}
 module.exports = {
     createAtencion,
     getAtencionesByUser,
@@ -88,5 +100,6 @@ module.exports = {
     getReporteAnual,
     getReporteAnualMensual,
     getReporteAnioMes,
-    getAtencionesByDate
+    getAtencionesByDate,
+    getReporteAnioMesUserId
 };

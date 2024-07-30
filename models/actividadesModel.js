@@ -2,6 +2,7 @@
 const db = require('../db/db');
 
 const createActivity = (activity, callback) => {
+    //console.log("hora: ",activity.hora,"fecha: ",activity.fecha);
     const sql = `INSERT INTO actividades (titulo, descripcion, hora, fecha, estado, id_usuario) VALUES (?, ?, ?, ?, 'pendiente', ?)`;
     db.query(sql, [activity.titulo, activity.descripcion, activity.hora, activity.fecha, activity.id_usuario], (err, results) => {
         if (err) return callback(err);

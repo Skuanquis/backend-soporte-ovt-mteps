@@ -147,12 +147,12 @@ const getTrabajadores = (callback) =>{
 }
 
 const getOtrosProblemasPasante = (id, callback) => {
-    const query = `SELECT problema, COUNT(*) AS total FROM atencion WHERE problema IN ('falla interoperabilidad', 'contraseña', 'otro') AND id_usuario = ? AND MONTH(fecha) = MONTH(CURRENT_DATE) AND YEAR(fecha) = YEAR(CURRENT_DATE) GROUP BY problema;`
+    const query = `SELECT problema, COUNT(*) AS total FROM atencion WHERE problema IN ('falla interoperabilidad', 'contraseña', 'otro', 'deposito') AND id_usuario = ? AND MONTH(fecha) = MONTH(CURRENT_DATE) AND YEAR(fecha) = YEAR(CURRENT_DATE) GROUP BY problema;`
     db.query(query, [id], callback)
 }
 
 const getOtrosProblemas = (callback) => {
-    const query = `SELECT problema, COUNT(*) AS total FROM atencion WHERE problema IN ('falla interoperabilidad', 'contraseña', 'otro') AND MONTH(fecha) = MONTH(CURRENT_DATE) AND YEAR(fecha) = YEAR(CURRENT_DATE) GROUP BY problema;`
+    const query = `SELECT problema, COUNT(*) AS total FROM atencion WHERE problema IN ('falla interoperabilidad', 'contraseña', 'otro', 'deposito') AND MONTH(fecha) = MONTH(CURRENT_DATE) AND YEAR(fecha) = YEAR(CURRENT_DATE) GROUP BY problema;`
     db.query(query, callback)
 }
 
@@ -221,14 +221,14 @@ const getReport = (filters, callback) => {
     
     const formattedFechaInicio = new Date(fechaInicio).toISOString().split('T')[0];
     const formattedFechaFin = new Date(fechaFin).toISOString().split('T')[0];
-    console.log("fecha ini: ",formattedFechaInicio, "fecha fin: ",formattedFechaFin);
+    //console.log("fecha ini: ",formattedFechaInicio, "fecha fin: ",formattedFechaFin);
     let query = `
         SELECT
             a.tipo_atencion, u.nombre AS nombre_pasante, a.problema, a.subproblema, a.estado,
             a.fecha, a.nit, a.nombre_empresa
         FROM atencion a
         JOIN usuarios u ON a.id_usuario = u.id_usuario
-        WHERE a.fecha >= ? AND a.fecha <= ? ORDER BY fecha DESC
+        WHERE a.fecha >= ? AND a.fecha <= ?
     `;
     const params = [formattedFechaInicio, formattedFechaFin];
     
@@ -256,6 +256,8 @@ const getReport = (filters, callback) => {
         query += ' AND u.nombre = ?';
         params.push(pasante);
     }
+
+    query += ' ORDER BY a.fecha DESC';
 
     db.query(query, params, (err, rows) => {
         if (err) {

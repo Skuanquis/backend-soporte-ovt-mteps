@@ -11,7 +11,7 @@ const createActivity = (activity, callback) => {
 };
 
 const getAllActivities = (callback) => {
-    const sql = `SELECT a.id_actividad, a.titulo, a.descripcion, a.hora, a.fecha, a.estado, u.nombre as usuario, a.fecha_completado
+    const sql = `SELECT a.id_actividad, a.titulo, a.descripcion, a.hora, a.fecha, a.estado, u.nombre as usuario, u.id_usuario, a.fecha_completado
                  FROM actividades a
                  JOIN usuarios u ON a.id_usuario = u.id_usuario
                  ORDER BY a.fecha DESC, a.hora DESC`;
@@ -46,10 +46,23 @@ const marcarActividadCompletada = (id, fecha_completado, callback) => {
     });
 };
 
+
+const updateActivity = (id, activityData) => {
+    const { titulo, descripcion, hora, fecha, estado, id_usuario } = activityData;
+    const sql = `UPDATE actividades SET titulo = ?, descripcion = ?, hora = ?, fecha = ?, estado = ?, id_usuario = ? WHERE id_actividad = ?`;
+    return new Promise((resolve, reject) => {
+        db.query(sql, [titulo, descripcion, hora, fecha, estado, id_usuario, id], (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+};
+
 module.exports = {
     createActivity,
     getAllActivities,
     getActivitiesByUserId,
     marcarActividadCompletada,
-    getActivitiesByUserIdCompletadas
+    getActivitiesByUserIdCompletadas,
+    updateActivity
 };

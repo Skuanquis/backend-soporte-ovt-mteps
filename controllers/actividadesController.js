@@ -70,10 +70,23 @@ const marcarActividadCompletada = (req, res) => {
         res.json({ message: 'Actividad completada exitosamente' });
     });
 };
+const updateActivity = async (req, res) => {
+    const { id } = req.params;
+    const activityData = req.body;
+
+    try {
+        await activityModel.updateActivity(id, activityData);
+        res.status(200).send({ message: 'Actividad actualizada exitosamente' });
+    } catch (error) {
+        res.status(500).send({ message: 'Error al actualizar la actividad', error });
+    }
+};
+
 module.exports = {
     createActivity,
     getAllActivities,
     getActivitiesByUserId,
     marcarActividadCompletada,
-    getActivitiesByUserIdCompletadas
+    getActivitiesByUserIdCompletadas,
+    updateActivity
 };

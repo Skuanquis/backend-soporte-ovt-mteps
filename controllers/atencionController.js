@@ -84,7 +84,7 @@ const getReporteAnioMes = (req, res) => {
 
 const getReporteAnioMesUserId = (req, res) =>{
     const id_usuario = req.params.id
-    console.log(req)
+    //console.log(req)
     atencionModel.getReporteAnioMesUserId(id_usuario, (err, report) => {
         if (err) {
             console.error('Error generating report:', err);

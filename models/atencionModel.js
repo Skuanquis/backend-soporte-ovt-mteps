@@ -87,6 +87,7 @@ const getReporteAnual = (callback) => {
         COUNT(CASE WHEN subproblema = 'No valida dependiente' THEN 1 END) AS Subproblema_Novalidadependiente,
         COUNT(CASE WHEN subproblema = 'No valida trabajador' THEN 1 END) AS Subproblema_Novalidatrabajador,
         COUNT(CASE WHEN problema = 'Contraseña' THEN 1 END) AS Total_Contraseña,
+        COUNT(CASE WHEN problema = 'Deposito' THEN 1 END) AS Deposito,
         COUNT(CASE WHEN problema = 'Falla interoperabilidad' THEN 1 END) AS Total_Falla_Interoperabilidad,
         COUNT(CASE WHEN problema = 'Otro' THEN 1 END) AS Total_Otro
     FROM
@@ -153,6 +154,7 @@ const getReporteAnioMes = (anio, mes, callback) =>{
     COUNT(CASE WHEN subproblema = 'Retiro de trabajador' THEN 1 END) AS Subproblema_Retirotrabajador,
     COUNT(CASE WHEN subproblema = 'No valida dependiente' THEN 1 END) AS Subproblema_Novalidadependiente,
     COUNT(CASE WHEN subproblema = 'No valida trabajador' THEN 1 END) AS Subproblema_Novalidatrabajador,
+    COUNT(CASE WHEN problema = 'Deposito' THEN 1 END) AS Deposito,
     COUNT(CASE WHEN problema = 'Contraseña' THEN 1 END) AS Total_Contraseña,
     COUNT(CASE WHEN problema = 'Falla interoperabilidad' THEN 1 END) AS Total_Falla_Interoperabilidad,
     COUNT(CASE WHEN problema = 'Otro' THEN 1 END) AS Total_Otro
@@ -203,6 +205,7 @@ const getReporteAnioMesUserId = (id, callback) => {
         COUNT(CASE WHEN subproblema = 'Retiro de trabajador' THEN 1 END) AS Subproblema_Retirotrabajador,
         COUNT(CASE WHEN subproblema = 'No valida dependiente' THEN 1 END) AS Subproblema_Novalidadependiente,
         COUNT(CASE WHEN subproblema = 'No valida trabajador' THEN 1 END) AS Subproblema_Novalidatrabajador,
+        COUNT(CASE WHEN problema = 'Deposito' THEN 1 END) AS Deposito,
         COUNT(CASE WHEN problema = 'Contraseña' THEN 1 END) AS Total_Contraseña,
         COUNT(CASE WHEN problema = 'Falla interoperabilidad' THEN 1 END) AS Total_Falla_Interoperabilidad,
         COUNT(CASE WHEN problema = 'Otro' THEN 1 END) AS Total_Otro
